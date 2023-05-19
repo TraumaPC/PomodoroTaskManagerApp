@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище PomodoroProjectDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Progress">
+          <Key>
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="IdTask" Type="int" Nullable="false" />
+          <Property Name="CompletedTasks" Type="int" Nullable="false" />
+          <Property Name="Percents" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="IdTask" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DOC" Type="smalldatetime" Nullable="false" />
+          <Property Name="DOE" Type="smalldatetime" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="LName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ULogin" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="UPass" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserTask">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="IdTask" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_UserTask_Progress">
+          <End Role="Progress" Type="Self.Progress" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Progress">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTask_Tasks">
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tasks">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTask_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище PomodoroProjectDBModelContainer">
+          <EntitySet Name="Progress" EntityType="Self.Progress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTask" EntityType="Self.UserTask" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_UserTask_Progress" Association="Self.FK_UserTask_Progress">
+            <End Role="Progress" EntitySet="Progress" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTask_Tasks" Association="Self.FK_UserTask_Tasks">
+            <End Role="Tasks" EntitySet="Tasks" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTask_Users" Association="Self.FK_UserTask_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PomodoroProjectDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Progress">
+          <Key>
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="IdTask" Type="Int32" Nullable="false" />
+          <Property Name="CompletedTasks" Type="Int32" Nullable="false" />
+          <Property Name="Percents" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserTask" Relationship="Self.FK_UserTask_Progress" FromRole="Progress" ToRole="UserTask" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="IdTask" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DOC" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DOE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Status" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserTask" Relationship="Self.FK_UserTask_Tasks" FromRole="Tasks" ToRole="UserTask" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ULogin" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UPass" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserTask" Relationship="Self.FK_UserTask_Users" FromRole="Users" ToRole="UserTask" />
+        </EntityType>
+        <EntityType Name="UserTask">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="IdTask" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="IdTask" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Progress" Relationship="Self.FK_UserTask_Progress" FromRole="UserTask" ToRole="Progress" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK_UserTask_Tasks" FromRole="UserTask" ToRole="Tasks" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_UserTask_Users" FromRole="UserTask" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_UserTask_Progress">
+          <End Role="Progress" Type="Self.Progress" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Progress">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTask_Tasks">
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tasks">
+              <PropertyRef Name="IdTask" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="IdTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTask_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PomodoroProjectDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Progress" EntityType="Self.Progress" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="UserTask" EntityType="Self.UserTask" />
+          <AssociationSet Name="FK_UserTask_Progress" Association="Self.FK_UserTask_Progress">
+            <End Role="Progress" EntitySet="Progress" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTask_Tasks" Association="Self.FK_UserTask_Tasks">
+            <End Role="Tasks" EntitySet="Tasks" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTask_Users" Association="Self.FK_UserTask_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PomodoroProjectDBModelContainer" CdmEntityContainer="PomodoroProjectDBEntities">
+          <EntitySetMapping Name="Progress">
+            <EntityTypeMapping TypeName="PomodoroProjectDBModel.Progress">
+              <MappingFragment StoreEntitySet="Progress">
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="CompletedTasks" ColumnName="CompletedTasks" />
+                <ScalarProperty Name="Percents" ColumnName="Percents" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PomodoroProjectDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="PomodoroProjectDBModel.Tasks">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+                <ScalarProperty Name="TaskDescription" ColumnName="TaskDescription" />
+                <ScalarProperty Name="DOC" ColumnName="DOC" />
+                <ScalarProperty Name="DOE" ColumnName="DOE" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="PomodoroProjectDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="ULogin" ColumnName="ULogin" />
+                <ScalarProperty Name="UPass" ColumnName="UPass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTask">
+            <EntityTypeMapping TypeName="PomodoroProjectDBModel.UserTask">
+              <MappingFragment StoreEntitySet="UserTask">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IdTask" ColumnName="IdTask" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

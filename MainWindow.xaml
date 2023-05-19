@@ -13,7 +13,19 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Регистрация" Height="600" Width="800">
-    <Grid Background ="#fdadada">
-        
+    <Grid Background ="#ffdadada">
+        <Border MinWidth="400" Margin="15" Background="White" VerticalAlignment="Center" Padding="30" MaxWidth="550" CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"></DropShadowEffect>
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock Text="Здравствуйте" FontSize="30" FontWeight="Bold" Margin="0 0 0 20"/>
+                <Grid Margin="0 0 0 20" >
+                    <Button HorizontalAlignment="Left" Content="Регистрация" Click="RegistrationButton_Click" />
+                    <Button HorizontalAlignment="Right" Content= "Авторизация" Style="{StaticResource MaterialDesignFlatButton}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
     </Grid>
 </Window>

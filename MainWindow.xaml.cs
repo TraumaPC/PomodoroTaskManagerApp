@@ -24,7 +24,7 @@ namespace PomodoroTaskManagerApp
         {
             InitializeComponent();
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RegistrationButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Hi","message", MessageBoxButton.OK, MessageBoxImage.Information);
         }
